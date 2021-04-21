@@ -1,0 +1,38 @@
+sudo: required
+language: generic
+
+services:
+  - docker
+
+before_install:
+  - docker build -t darango/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true darango/react-test npm test --coverage
+
+after_success:
+  - docker build -t darango/multi-client ./client
+  - docker build -t darango/multi-server ./server
+  - docker build -t darango/multi-worker ./worker
+  - docker build -t darango/multi-nginx ./nginx
+
+  #Login docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  #Take those images and push them to docker hub
+  - docker push darango/multi-client
+  - docker push darango/multi-server
+  - docker push darango/multi-worker
+  - docker push darango/multi-nginx
+
+# deploy:
+#   provider: elasticbeanstalk
+#   region: "us-east-1"
+#   app: "docker-react"
+#   env: "Dockerreact-env"
+#   bucket_name: "elasticbeanstalk-us-east-1-193687948732"
+#   bucket_path: "docker-react"
+#   on:
+#     branch: master
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key: $AWS_SECRET_KEY

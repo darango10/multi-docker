@@ -61,13 +61,6 @@ export const Fib = () => {
             For index ({t[0]}) | Calculated...{t[1]}
           </p>
         ))}
-
-        {/* <h3>Calculated Values</h3>
-        {values.map((value, i) => (
-          <p>
-            For index {value} I calculated {value[i]}
-          </p>
-        ))} */}
       </center>
     </div>
   );
