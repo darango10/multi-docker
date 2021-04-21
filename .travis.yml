@@ -5,25 +5,25 @@ services:
   - docker
 
 before_install:
-  - docker build -t darango/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t darango10/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true darango/react-test npm test --coverage
+  - docker run -e CI=true darango10/react-test npm test --coverage
 
 after_success:
-  - docker build -t darango/multi-client ./client
-  - docker build -t darango/multi-server ./server
-  - docker build -t darango/multi-worker ./worker
-  - docker build -t darango/multi-nginx ./nginx
+  - docker build -t darango10/multi-client ./client
+  - docker build -t darango10/multi-server ./server
+  - docker build -t darango10/multi-worker ./worker
+  - docker build -t darango10/multi-nginx ./nginx
 
   #Login docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
   #Take those images and push them to docker hub
-  - docker push darango/multi-client
-  - docker push darango/multi-server
-  - docker push darango/multi-worker
-  - docker push darango/multi-nginx
+  - docker push darango10/multi-client
+  - docker push darango10/multi-server
+  - docker push darango10/multi-worker
+  - docker push darango10/multi-nginx
 
 # deploy:
 #   provider: elasticbeanstalk
